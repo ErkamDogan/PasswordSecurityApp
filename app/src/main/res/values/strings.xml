@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">SecApp</string>
+    <string name="enter_pin">Enter PIN</string>
+    <string name="add_password">Add Password</string>
+    <string name="app_name_hint">App Name</string>
+    <string name="password_hint">Password</string>
+    <string name="submit">Submit</string>
+</resources>
