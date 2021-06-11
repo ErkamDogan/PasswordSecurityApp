@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.PopupWindow;
 
 import androidx.annotation.Nullable;
@@ -29,14 +30,15 @@ public class PasswordsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.passwords_view);
 
-        passwords.add(new PasswordEntry("Email", "emailpassword"));
-        passwords.add(new PasswordEntry("MusicApp", "musicpassword"));
-        passwords.add(new PasswordEntry("Teams", "teamspassword"));
 
         recyclerView = findViewById(R.id.recyclerView);
-        passwordListAdapter = new PasswordListAdapter(passwords);
+        passwordListAdapter = new PasswordListAdapter(passwords, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(passwordListAdapter);
+
+        addPassword("Email", "emailpassword");
+        addPassword("MusicApp", "musicpassword");
+        addPassword("Teams", "teamspassword");
 
         passwordAddButton = findViewById(R.id.addPasswordButton);
         passwordAddButton.setOnClickListener(new View.OnClickListener() {
@@ -50,12 +52,28 @@ public class PasswordsActivity extends AppCompatActivity {
                 int height = 270;
 
                 PopupWindow popupWindow = new PopupWindow(popUpView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+
+                EditText inputAppName = popUpView.findViewById(R.id.popUpInputApp);
+                EditText inputPasssword = popUpView.findViewById(R.id.popUpInputPass);
+                Button submitButton = popUpView.findViewById(R.id.popUpInputSubmit);
+
+                submitButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (inputAppName.getText().length() > 0 && inputPasssword.getText().length() > 0) {
+                            addPassword(inputAppName.getText().toString(), inputPasssword.getText().toString());
+                            popupWindow.dismiss();
+                        }
+                    }
+                });
+
                 popupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
             }
         });
     }
 
     public void addPassword(String appName, String password) {
-
+        passwords.add(new PasswordEntry(appName, password));
+        passwordListAdapter.notifyDataSetChanged();
     }
 }
