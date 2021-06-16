@@ -16,6 +16,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.secapp.Engine.DatabaseHelper;
 import com.example.secapp.Engine.PasswordEntry;
 
 import java.util.ArrayList;
@@ -68,8 +69,11 @@ public class PasswordListAdapter extends RecyclerView.Adapter<PasswordListAdapte
                     public void onClick(View v) {
                         if (inputAppName.getText().length() > 0 && inputPasssword.getText().length() > 0) {
                             passwordList.set(holder.getAdapterPosition(),
-                                    new PasswordEntry(inputAppName.getText().toString(), inputPasssword.getText().toString()));
+                                    new PasswordEntry(inputAppName.getText().toString(), inputPasssword.getText().toString(),"0"));
                             notifyDataSetChanged();
+                            DatabaseHelper db = new DatabaseHelper(context);
+                            db.updatePassword(passwordEntry.getId(), inputAppName.getText().toString(), inputPasssword.getText().toString());
+                            db.close();
                             popupWindow.dismiss();
                         }
                     }
@@ -95,6 +99,9 @@ public class PasswordListAdapter extends RecyclerView.Adapter<PasswordListAdapte
                     @Override
                     public void onClick(View v) {
                         removeItem(holder.getAdapterPosition());
+                        DatabaseHelper db = new DatabaseHelper(context);
+                        db.deletePassword(passwordEntry.getId());
+                        db.close();
                         popupWindow.dismiss();
                     }
                 });

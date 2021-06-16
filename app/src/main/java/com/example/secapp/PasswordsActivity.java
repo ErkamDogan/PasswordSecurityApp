@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.secapp.Engine.DatabaseHelper;
 import com.example.secapp.Engine.PasswordEntry;
 
 import java.util.ArrayList;
@@ -36,9 +37,14 @@ public class PasswordsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(passwordListAdapter);
 
-        addPassword("Email", "emailpassword");
+       /*addPassword("Email", "emailpassword");
         addPassword("MusicApp", "musicpassword");
-        addPassword("Teams", "teamspassword");
+        addPassword("Teams", "teamspassword");*/
+
+        DatabaseHelper db = new DatabaseHelper(getApplicationContext());
+        passwords.addAll(db.getPaswordList());
+        db.close();
+        passwordListAdapter.notifyDataSetChanged();
 
         passwordAddButton = findViewById(R.id.addPasswordButton);
         passwordAddButton.setOnClickListener(new View.OnClickListener() {
@@ -73,7 +79,10 @@ public class PasswordsActivity extends AppCompatActivity {
     }
 
     public void addPassword(String appName, String password) {
-        passwords.add(new PasswordEntry(appName, password));
+        DatabaseHelper db = new DatabaseHelper(getApplicationContext());
+        long result = db.addPassword(appName,password);
+        passwords.add(new PasswordEntry(appName, password,Long.toString(result)));
+        db.close();
         passwordListAdapter.notifyDataSetChanged();
     }
 }
