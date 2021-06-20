@@ -1,15 +1,17 @@
 # SecApp
 
+    Gıyaseddin Tanrikulu - 20170808072
+    Erkam Dogan - 20160808036
 
-  We use SQLite to meet the database needs locally in our Android applications. SQLite is a database that works without the need for a panel or server side.
+  We use SQLite to meet the out database needs locally in our Android applications. SQLite is a database that works without the need for a panel or server side.
 
-Classes we will use for SQLite:
+  Classes we will use for SQLite:
 
   1. SQLiteOpenHelper: It is inherited in our class that will be written for database access. The creation of tables or schematic changes are performed with these classes.
 
   1. SQLiteDatabase: Class that hosts CRUD(Create, Read, Update and Delete) operations
 
-  1. ContentValues: The class we will use when creating our parameter values
+  1. ContentValues: The class will be used when creating our parameter values
 
   1. Cursor: Allows us to work on the records we retrieved from our database.
 
@@ -20,4 +22,9 @@ Classes we will use for SQLite:
 
   1. onUpdate: It is used when any update operation is required on the tables.
 
-In the TablesInfo class, we define the table you want to create and its columns. We created our table where we will keep our passwords.
+In the TablesInfo class, we define the tables and create its columns. And this is also the place where we keep password entries.
+
+A password entry consists of an application name and a password, idea is to keep them locally without any online access to keep them safe in your phone.
+This application is secured with a PIN system, that is initially "000000".
+
+Demo Video: https://youtu.be/hrvCjwYnlQc
