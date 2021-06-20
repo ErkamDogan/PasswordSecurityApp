@@ -12,6 +12,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 
+import com.example.secapp.Engine.DatabaseHelper;
+
 public class MainActivity extends AppCompatActivity {
     private EditText pinField;
 
@@ -63,9 +65,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void pinAction() {
-        int rawPin = Integer.parseInt(pinField.getText().toString());
-        //Log.i("PIN", "getPin: " + rawPin);
-        Intent intent = new Intent(MainActivity.this, PasswordsActivity.class);
-        startActivity(intent);
+        DatabaseHelper db = new DatabaseHelper(getApplicationContext());
+
+        String rawPin = pinField.getText().toString();
+        if (db.getPin().equals(rawPin)) {
+            Intent intent = new Intent(MainActivity.this, PasswordsActivity.class);
+            startActivity(intent);
+        }
+        //Log.i("PIN", "getPin: " + db.getPin());
     }
 }

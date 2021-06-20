@@ -1,6 +1,8 @@
 package com.example.secapp;
 
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +27,7 @@ public class PasswordsActivity extends AppCompatActivity {
     protected RecyclerView recyclerView;
     protected PasswordListAdapter passwordListAdapter;
     protected Button passwordAddButton;
+    protected Button changePinButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,6 +79,39 @@ public class PasswordsActivity extends AppCompatActivity {
                 popupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
             }
         });
+
+        changePinButton = findViewById(R.id.changePinButton);
+        changePinButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                LayoutInflater layoutInflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
+                View popUpView = layoutInflater.inflate(R.layout.pin_edit_popup, null);
+
+                int widht = 350;
+                int height = 270;
+
+                PopupWindow popupWindow = new PopupWindow(popUpView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+
+                EditText pinInput = popUpView.findViewById(R.id.popUpPinInput);
+                pinInput.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});
+                EditText pinConfInput = popUpView.findViewById(R.id.popUpPinConfInput);
+                pinConfInput.setFilters(new InputFilter[]{new InputFilter.LengthFilter(6)});
+                Button pinEditButton = popUpView.findViewById(R.id.popUpPinEditButton);
+
+                pinEditButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (pinInput.getText().length() == 6 && pinInput.getText().toString().equals(pinConfInput.getText().toString())) {
+                            changePin(pinInput.getText().toString());
+                            popupWindow.dismiss();
+                        }
+                    }
+                });
+
+                popupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
+            }
+        });
     }
 
     public void addPassword(String appName, String password) {
@@ -89,5 +125,6 @@ public class PasswordsActivity extends AppCompatActivity {
         DatabaseHelper db = new DatabaseHelper(getApplicationContext());
         long result = db.changePin(pin);
         db.close();
+        Log.i("Pin", "new pin" + db.getPin());
     }
 }

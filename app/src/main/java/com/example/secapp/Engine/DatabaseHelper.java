@@ -23,6 +23,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     TablesInfo.PasswordTableEntry.CreateDate + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP " +
                     ")";
 
+    private static final String TABLE_PIN_CREATE =
+            "CREATE TABLE " + TablesInfo.PinTableEntry.TABLE_NAME + " (" +
+                    TablesInfo.PinTableEntry.Pin + " TEXT" +
+                    ")";
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -30,28 +35,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(TABLE_NOTE_CREATE);
+        db.execSQL(TABLE_PIN_CREATE);
+        ContentValues cv = new ContentValues();
+        cv.put(TablesInfo.PinTableEntry.Pin, "000000");
+
+        long result = db.insert(TablesInfo.PinTableEntry.TABLE_NAME, null, cv);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TablesInfo.PasswordTableEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TablesInfo.PinTableEntry.TABLE_NAME);
 
         onCreate(db);
     }
+
     public long changePin(String pin) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(TablesInfo.PinTableEntry.Pin, pin.trim());
+        cv.put(TablesInfo.PinTableEntry.Pin, pin);
 
-        long result = db.insert(TablesInfo.PinTableEntry.TABLE_NAME, null, cv);
-
-        if (result > -1)
-            Log.i("DatabaseHelper", "Not başarıyla kaydedildi");
-        else
-            Log.i("DatabaseHelper", "Not kaydedilemedi");
+        long result = db.replace(TablesInfo.PinTableEntry.TABLE_NAME, null, cv);
 
         db.close();
-        return  result;
+        return result;
     }
     public long addPassword(String appName, String password) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -60,11 +67,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(TablesInfo.PasswordTableEntry.Password, password.trim());
 
         long result = db.insert(TablesInfo.PasswordTableEntry.TABLE_NAME, null, cv);
-
-        if (result > -1)
-            Log.i("DatabaseHelper", "Not başarıyla kaydedildi");
-        else
-            Log.i("DatabaseHelper", "Not kaydedilemedi");
 
         db.close();
         return  result;
@@ -103,4 +105,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return data;
     }
+
+    public String getPin() {
+        ArrayList<PasswordEntry> data = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String[] projection = { TablesInfo.PinTableEntry.Pin};
+
+        Cursor cursor = db.query(TablesInfo.PinTableEntry.TABLE_NAME,
+                projection, null, null, null, null, null);
+        String pin;
+
+        if( cursor != null && cursor.moveToFirst() ){
+            pin = cursor.getString(cursor.getColumnIndex("pin"));
+            cursor.close();
+            return pin;
+        } else {
+            return null;
+        }
+    }
+
 }

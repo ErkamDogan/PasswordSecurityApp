@@ -12,10 +12,11 @@ public class TablesInfo {
         public static final String Password = "password";
         public static final String CreateDate = "create_date";
     }
-    public static final class PinTableEntry implements BaseColumns {
-        public static final String TABLE_NAME = "pin";
 
-        public static final String Pin = "password";
+    public static final class PinTableEntry implements BaseColumns {
+        public static final String TABLE_NAME = "pintable";
+
+        public static final String Pin = "pin";
     }
 
 }
