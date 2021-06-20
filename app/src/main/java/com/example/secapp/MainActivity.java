@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.secapp.Engine.DatabaseHelper;
 
@@ -73,5 +74,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
         //Log.i("PIN", "getPin: " + db.getPin());
+        Toast.makeText(MainActivity.this, "Invalid PIN!", Toast.LENGTH_LONG).show();
     }
 }

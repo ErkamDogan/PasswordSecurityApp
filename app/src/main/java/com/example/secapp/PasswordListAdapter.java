@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -139,6 +140,8 @@ public class PasswordListAdapter extends RecyclerView.Adapter<PasswordListAdapte
     private void removeItem(int position) {
         passwordList.remove(position);
         notifyItemRemoved(position);
+        Toast.makeText(context, "Password Entry removed!", Toast.LENGTH_LONG).show();
+
     }
 
     public class PasswordListViewHolder extends RecyclerView.ViewHolder {

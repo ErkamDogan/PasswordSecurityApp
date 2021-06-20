@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -120,11 +121,15 @@ public class PasswordsActivity extends AppCompatActivity {
         passwords.add(new PasswordEntry(appName, password,Long.toString(result)));
         db.close();
         passwordListAdapter.notifyDataSetChanged();
+        Toast.makeText(PasswordsActivity.this, "Password Entry added!", Toast.LENGTH_LONG).show();
+
     }
     public void changePin(String pin) {
         DatabaseHelper db = new DatabaseHelper(getApplicationContext());
         long result = db.changePin(pin);
         db.close();
-        Log.i("Pin", "new pin" + db.getPin());
+        //Log.i("Pin", "new pin" + db.getPin());
+        Toast.makeText(PasswordsActivity.this, "PIN Updated!", Toast.LENGTH_LONG).show();
+
     }
 }
