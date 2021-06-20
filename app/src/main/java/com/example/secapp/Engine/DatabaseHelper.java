@@ -55,7 +55,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         cv.put(TablesInfo.PinTableEntry.Pin, pin);
 
-        long result = db.replace(TablesInfo.PinTableEntry.TABLE_NAME, null, cv);
+        long result = db.update(TablesInfo.PinTableEntry.TABLE_NAME,cv, null, null);
 
         db.close();
         return result;
@@ -107,7 +107,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public String getPin() {
-        ArrayList<PasswordEntry> data = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
         String[] projection = { TablesInfo.PinTableEntry.Pin};
