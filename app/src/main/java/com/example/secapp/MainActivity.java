@@ -72,8 +72,9 @@ public class MainActivity extends AppCompatActivity {
         if (db.getPin().equals(rawPin)) {
             Intent intent = new Intent(MainActivity.this, PasswordsActivity.class);
             startActivity(intent);
+        }else {
+            //Log.i("PIN", "getPin: " + db.getPin());
+            Toast.makeText(MainActivity.this, "Invalid PIN!", Toast.LENGTH_LONG).show();
         }
-        //Log.i("PIN", "getPin: " + db.getPin());
-        Toast.makeText(MainActivity.this, "Invalid PIN!", Toast.LENGTH_LONG).show();
     }
 }
