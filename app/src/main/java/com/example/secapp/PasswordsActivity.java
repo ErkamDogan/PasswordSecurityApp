@@ -85,4 +85,9 @@ public class PasswordsActivity extends AppCompatActivity {
         db.close();
         passwordListAdapter.notifyDataSetChanged();
     }
+    public void changePin(String pin) {
+        DatabaseHelper db = new DatabaseHelper(getApplicationContext());
+        long result = db.changePin(pin);
+        db.close();
+    }
 }

@@ -38,7 +38,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         onCreate(db);
     }
+    public long changePin(String pin) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(TablesInfo.PinTableEntry.Pin, pin.trim());
 
+        long result = db.insert(TablesInfo.PinTableEntry.TABLE_NAME, null, cv);
+
+        if (result > -1)
+            Log.i("DatabaseHelper", "Not başarıyla kaydedildi");
+        else
+            Log.i("DatabaseHelper", "Not kaydedilemedi");
+
+        db.close();
+        return  result;
+    }
     public long addPassword(String appName, String password) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
